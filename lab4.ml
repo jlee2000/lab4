@@ -122,7 +122,10 @@ textbook for some advice.)
 ......................................................................*)
 
 let max_list (lst : int list) : int =
-  failwith "max_list not implemented" ;;
+  match lst with
+  | [] -> raise (Invalid_argument "empty list")
+  | [elt] -> elt
+  | head :: tail -> max head (max_list tail) ;;
      
 (*......................................................................
 Exercise 6: Write a function min_option to return the smaller of two
@@ -133,7 +136,11 @@ are handled; no nonexhaustive match warnings!
 ......................................................................*)
 
 let min_option (x : int option) (y : int option) : int option =
-  failwith "min_option not implemented" ;;
+  match x, y with
+  | None, None -> None
+  | x, None -> x
+  | None, y -> y
+  | x, y -> min x y ;;
      
 (*......................................................................
 Exercise 7: Write a function plus_option to return the sum of two int
@@ -142,7 +149,11 @@ return the other.
 ......................................................................*)
 
 let plus_option (x : int option) (y : int option) : int option =
-  failwith "plus_option not implemented" ;;
+  match x, y with
+  | None, None -> None
+  | x, None -> x
+  | None, y -> y
+  | Some x, Some y -> Some (x + y) ;;
 
 (*======================================================================
 Part 3: Polymorphism practice
@@ -165,8 +176,12 @@ What is calc_option's function type signature?
 Now implement calc_option.
 ......................................................................*)
 
-let calc_option =
-  fun _ -> failwith "calc_option not implemented" ;;
+let calc_option (func : 'a  option-> 'b option -> 'c option) (x : 'a option) (y : 'b option) : 'c option =
+  match x, y with
+  | None, None -> None
+  | x, None -> x
+  | None, y -> y
+  | x, y -> func x y ;; ;;
      
 (*......................................................................
 Exercise 9: Now rewrite min_option and plus_option using the higher-order
@@ -174,10 +189,14 @@ function calc_option. Call them min_option_2 and plus_option_2.
 ......................................................................*)
   
 let min_option_2 =
-  fun _ -> failwith "min_option_2 not implemented" ;;
+  calc_option min;;
+
+let add (x : int option) (y : int option) =
+  match x, y with
+  | Some x, Some y -> Some (x + y) ;;
      
 let plus_option_2 =
-  fun _ -> failwith "plus_option_2 not implemented" ;;
+  calc_option add ;;
 
 (*......................................................................
 Exercise 10: Now that we have calc_option, we can use it in other
