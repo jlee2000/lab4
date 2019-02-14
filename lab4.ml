@@ -32,9 +32,11 @@ To think about before you start coding:
 Now implement the two functions curry and uncurry.
 ......................................................................*)
 
-let curry = fun _ -> failwith "curry not implemented" ;;
+let curry (func : 'a * 'b -> 'c) : 'a -> 'b -> 'c = 
+  fun x y -> func (x, y) ;;
      
-let uncurry = fun _ -> failwith "uncurry not implemented" ;;
+let uncurry (func : 'a -> 'b -> 'c) : 'a * 'b -> 'c = 
+  fun (x, y) -> func x y ;;
 
 (*......................................................................
 Exercise 2: OCaml's built in binary operators, like ( + ) and ( * ) are
@@ -50,10 +52,10 @@ times functions.
 ......................................................................*)
 
 let plus =
-  fun _ -> failwith "plus not implemented"
+ uncurry (+) ;;
      
 let times =
-  fun _ -> failwith "times not implemented" ;;
+  uncurry ( * ) ;;
   
 (*......................................................................
 Exercise 3: Recall the prods function from Lab 1:
@@ -68,7 +70,7 @@ do you need the uncurried times function?
 ......................................................................*)
 
 let prods =
-  fun _ -> failwith "prods not implemented" ;; 
+  List.map times ;; 
 
 (*======================================================================
 Part 2: Option types
@@ -101,9 +103,16 @@ Reimplement max_list, but this time, it should return an int option
 instead of an int. Call it max_list_opt. The None return value should
 be used when called on an empty list.
 ......................................................................*)
+let rec max_list (lst : int list) : int =
+  match lst with
+  | [elt] -> elt
+  | head :: tail -> max head (max_list tail) ;;
 
-let max_list_opt (lst : int list) : int option =
-  failwith "max_list_opt not implemented" ;;
+let rec max_list_opt (lst : int list) : int option =
+  match lst with
+  | [] -> None
+  | [elt] -> Some elt
+  | head :: tail -> Some (max head (max_list tail)) ;; ;;
 
 (*......................................................................
 Exercise 5: Alternatively, we could have max_list raise an exception
