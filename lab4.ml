@@ -173,12 +173,12 @@ What is calc_option's function type signature?
 Now implement calc_option.
 ......................................................................*)
 
-let calc_option (func : 'a -> 'a -> 'a) (x : 'a option) (y : 'a option) : 'a option =
+let calc_option (f : 'a -> 'a -> 'a) (x : 'a option) (y : 'a option): 'a option =
   match x, y with
-  | None, None -> None
-  | Some left, None -> Some left
-  | None, Some right -> Some right
-  | Some left, Some right -> Some (func left right) ;; ;;
+  | None,      None       -> None
+  | None,      Some right -> Some right
+  | Some left, None       -> Some left
+  | Some left, Some right -> Some (f left right) ;;
      
 (*......................................................................
 Exercise 9: Now rewrite min_option and plus_option using the higher-order
