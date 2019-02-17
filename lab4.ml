@@ -173,7 +173,7 @@ What is calc_option's function type signature?
 Now implement calc_option.
 ......................................................................*)
 
-let calc_option (func : 'a -> 'b -> 'c) (x : 'a option) (y : 'b option) : 'c option =
+let calc_option (func : 'a -> 'a -> 'a) (x : 'a option) (y : 'a option) : 'a option =
   match x, y with
   | None, None -> None
   | Some left, None -> Some left
