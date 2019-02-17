@@ -176,9 +176,9 @@ Now implement calc_option.
 let calc_option (func : 'a -> 'b -> 'c) (x : 'a option) (y : 'b option) : 'c option =
   match x, y with
   | None, None -> None
-  | Some x, None -> Some x
-  | None, Some y -> Some y
-  | Some x, Some y -> Some (func x y) ;; ;;
+  | Some left, None -> Some left
+  | None, Some right -> Some right
+  | Some left, Some right -> Some (func left right) ;; ;;
      
 (*......................................................................
 Exercise 9: Now rewrite min_option and plus_option using the higher-order
